@@ -2,6 +2,7 @@ import { useState } from 'react'
 import './App.css'
 import { IlluminatedLetter } from './illuminated'
 import { Doodles } from './doodles';
+import { Doodles as Doodles2 } from './components/doodles-2';
 
 type DoodleFunction = (ctx: CanvasRenderingContext2D, x: number, y: number, size: number) => void;
 
@@ -56,19 +57,16 @@ const starDoodle: DoodleFunction = (ctx, x, y, size) => {
 
 
 function App() {
-  const [count, setCount] = useState(0)
   
 
   return (
     <>
-      <Doodles doodles={[flowerDoodle, starDoodle]} />
+     
+      <Doodles2 doodles={[flowerDoodle, starDoodle]} />
       <article>
         <IlluminatedLetter text={dummyText} />
       </article>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
