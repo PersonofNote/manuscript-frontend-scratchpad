@@ -3,6 +3,7 @@ import './App.css'
 import { IlluminatedLetter } from './illuminated'
 import { Doodles } from './doodles';
 import { Doodles as Doodles2 } from './components/doodles-2';
+import { DoodleMorphs } from './components/doodleMorph';
 
 type DoodleFunction = (ctx: CanvasRenderingContext2D, x: number, y: number, size: number) => void;
 
@@ -25,6 +26,74 @@ Atque, ut Tullius ait, ut etiam ferae fame monitae plerumque ad eum locum ubi al
 `
 
 ;
+
+const starShape = [
+  { x: 0, y: -20 },
+  { x: 5, y: -5 },
+  { x: 20, y: 0 },
+  { x: 5, y: 5 },
+  { x: 0, y: 20 },
+  { x: -5, y: 5 },
+  { x: -20, y: 0 },
+  { x: -5, y: -5 },
+];
+
+const flowerShape = [
+  { x: 0, y: -15 },
+  { x: 10, y: -10 },
+  { x: 15, y: 0 },
+  { x: 10, y: 10 },
+  { x: 0, y: 15 },
+  { x: -10, y: 10 },
+  { x: -15, y: 0 },
+  { x: -10, y: -10 },
+];
+
+const squiggleShape = Array.from({ length: 16 }).map(() => {
+    const x = Math.random() * 100 /5;
+    const y = Math.random() * 100/5;
+    const size = Math.random() * 20 + 10;
+    return {
+    x,
+    y,
+    size,
+    }
+});
+
+const whatShape = [
+  { x: 0, y: -20 },
+  { x: 5, y: -50 },
+  { x: 200, y: 0 },
+  { x: 50, y: 50 },
+  { x: 0, y: 10 },
+  { x: -45, y: 15 },
+  { x: -20, y: 0 },
+  { x: -5, y: -5 },
+  { x: 0, y: -20 },
+  { x: 5, y: -5 },
+  { x: 10, y: 4 },
+  { x: -25, y: 5 },
+  { x: 12, y: 20 },
+  { x: -5, y: 5 },
+  { x: -50, y: 10 },
+  { x: 0, y: -20 },
+];
+
+
+const spikeShape = Array.from({ length: 16 }).map((i: number) => {
+  const x = Math.random() * 100 /5;
+  const y = Math.random() * 100/5;
+  const size = Math.random() * 20 + 10;
+  const angle = (i * Math.PI) / 3;
+  const petalX = x + Math.cos(angle) * size;
+  const petalY = y + Math.sin(angle) * size;
+  return {
+  x: petalX,
+  y: petalY,
+  size,
+  }
+});
+
 
 
 // Example doodle functions
@@ -60,20 +129,19 @@ function App() {
   
 
   return (
-    <>
+    <> 
+    <DoodleMorphs doodles={[starShape, flowerShape, squiggleShape, spikeShape]} />
+      <main>
+        <article>
+          <IlluminatedLetter text={dummyText} />
+        </article>
+        <div className="card">
+          <p>
+            Edit <code>src/App.tsx</code> and save to test HMR
+          </p>
+        </div>
+      </main>
      
-      <Doodles2 doodles={[flowerDoodle, starDoodle]} />
-      <article>
-        <IlluminatedLetter text={dummyText} />
-      </article>
-      <div className="card">
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }

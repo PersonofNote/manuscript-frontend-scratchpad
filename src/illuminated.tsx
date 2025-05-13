@@ -16,9 +16,7 @@ export const IlluminatedLetter: React.FC<Props> = ({ text }) => {
 
   const firstLetter = sanity[0].toUpperCase();
   const rest = sanity.slice(1, -1);
-    console.log(match)
-    console.log(firstLetter)
-    console.log(rest)
+  
   return (
     <div className="illuminated-container">
       <span className="illuminated-letter" aria-hidden="true">

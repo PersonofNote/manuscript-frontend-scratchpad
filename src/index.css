@@ -82,13 +82,11 @@ button:focus-visible {
 }
 
 .illuminated-container {
-  position: relative;
-  display: flex;
+  text-align: left
 }
 
 .illuminated-letter {
   float: left;
-  margin-right: 0.2em;
-  margin-bottom: 0.1em;
-  shape-outside: circle(); /* Optional: makes wrap smoother */
+  margin-right: 0.5em;
+  /* shape-outside: circle(); /* Optional: makes wrap smoother */
 }

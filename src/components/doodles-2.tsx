@@ -55,28 +55,32 @@ export const Doodles: React.FC<Props> = ({ doodles, theme = 'light' }) => {
         if (!ctx) return;
       
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       
-        doodlesRef.current.forEach((d) => {
-          // interpolate position and size
-          d.x += (d.targetX - d.x) * 0.01;
-          d.y += (d.targetY - d.y) * 0.01;
-          d.size += (d.targetSize - d.size) * 0.01;
-          d.progress += 0.01;
-      
-          // when close to target, pick new one
-          if (d.progress >= 1) {
-            d.targetX = Math.random() * canvas.width;
-            d.targetY = Math.random() * canvas.height;
-            d.targetSize = Math.random() * 20 + 10;
-            d.progress = 0;
-          }
-      
-          ctx.save();
-          d.draw(ctx, d.x, d.y, d.size);
-          ctx.restore();
-        });
-      
-        requestAnimationFrame(animate);
+        if (!prefersReducedMotion) {
+          doodlesRef.current.forEach((d) => {
+            // interpolate position and size
+            d.x += (d.targetX - d.x) * 0.01;
+            d.y += (d.targetY - d.y) * 0.01;
+            d.size += (d.targetSize - d.size) * 0.01;
+            d.progress += 0.005;
+        
+            // when close to target, pick new one
+            if (d.progress >= 1) {
+              d.targetX = Math.random() * canvas.width;
+              d.targetY = Math.random() * canvas.height;
+              d.targetSize = Math.random() * 20 + 10;
+              d.progress = 0;
+            }
+        
+            ctx.save();
+            d.draw(ctx, d.x, d.y, d.size);
+            ctx.restore();
+          });
+        
+          requestAnimationFrame(animate);
+      }
       }, []);
       
 
@@ -108,6 +112,7 @@ export const Doodles: React.FC<Props> = ({ doodles, theme = 'light' }) => {
     }
   }, [doodles]);
 
+  
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -131,7 +136,7 @@ export const Doodles: React.FC<Props> = ({ doodles, theme = 'light' }) => {
     if (!prefersReducedMotion) {
       // 🔥 Slow redraw every N milliseconds
       intervalId = window.setInterval(() => {
-        draw();
+        //draw();
       }, 3000 + Math.random() * 2000);
     }
   
@@ -163,6 +168,7 @@ export const Doodles: React.FC<Props> = ({ doodles, theme = 'light' }) => {
         width: '100%',
         height: '100%',
         pointerEvents: 'none',
+        opacity: 0.6
       }}
       aria-hidden="true"
     />
