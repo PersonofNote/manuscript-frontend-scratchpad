@@ -88,5 +88,10 @@ button:focus-visible {
 .illuminated-letter {
   float: left;
   margin-right: 0.5em;
+  height: 20vw;
   /* shape-outside: circle(); /* Optional: makes wrap smoother */
+}
+
+.illuminated-letter img {
+  height: 20vw
 }

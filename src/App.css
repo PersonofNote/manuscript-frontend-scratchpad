@@ -44,5 +44,5 @@
 main {
   max-width: 750px;
   margin: auto;
-  background-color: white;
+  background-color: rgba(#f9f9f9, 0.9);
 }

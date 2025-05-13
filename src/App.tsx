@@ -7,6 +7,8 @@ import { DoodleMorphs } from './components/doodleMorph';
 
 type DoodleFunction = (ctx: CanvasRenderingContext2D, x: number, y: number, size: number) => void;
 
+// TODO: Implement "next" button that looks like a page turn in the upper-right corner
+
 const dummyText = `Sed maximum est in amicitia parem esse inferiori. Saepe enim excellentiae quaedam sunt, qualis erat Scipionis in nostro, ut ita dicam, grege. Numquam se ille Philo, numquam Rupilio, numquam Mummio anteposuit, numquam inferioris ordinis amicis, Q. vero Maximum fratrem, egregium virum omnino, sibi nequaquam parem, quod is anteibat aetate, tamquam superiorem colebat suosque omnes per se posse esse ampliores volebat.
 
 Et prima post Osdroenam quam, ut dictum est, ab hac descriptione discrevimus, Commagena, nunc Euphratensis, clementer adsurgit, Hierapoli, vetere Nino et Samosata civitatibus amplis inlustris.
@@ -135,11 +137,9 @@ function App() {
         <article>
           <IlluminatedLetter text={dummyText} />
         </article>
-        <div className="card">
           <p>
             Edit <code>src/App.tsx</code> and save to test HMR
           </p>
-        </div>
       </main>
      
     </>

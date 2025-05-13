@@ -1,3 +1,8 @@
+// CONCEPT: 
+/* Slowly morphing runes that can be provided per page and per theme */
+/* For light theme, the runes will look hand drawn and like living runes, either like doodles or abhorsen-like protection runes */
+/* Dark theme is more computer glyphs with a slightly higher contrast, like a subtle glow. Definitely not behind the words though. Kinda Tron, kinda Atlantis */
+
 import React, { useEffect, useRef, useCallback } from 'react';
 
 type Point = { x: number; y: number };
@@ -100,7 +105,7 @@ const choose = (arr) => {
  
 
 
-export const DoodleMorphs: React.FC<Props> = ({ doodles, theme = 'light' }) => {
+export const DoodleMorphs: React.FC<Props> = ({ doodles, theme = 'light', config = {speed: 0.002, opacity: 0.6} }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const doodlesRef = useRef<DoodleInstance[]>([]);
@@ -141,7 +146,7 @@ export const DoodleMorphs: React.FC<Props> = ({ doodles, theme = 'light' }) => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
     
       doodlesRef.current.forEach((d) => {
-        d.progress += 0.002; // 🌿 very slow morphing
+        d.progress += config.speed; // 🌿 very slow morphing
     
         if (d.progress >= 1) {
           d.progress = 0;
@@ -189,11 +194,13 @@ export const DoodleMorphs: React.FC<Props> = ({ doodles, theme = 'light' }) => {
         position: 'absolute',
         top: 0,
         left: 0,
+        right: 0,
+        bottom: 0,
         zIndex: -1,
         width: '100%',
         height: '100%',
         pointerEvents: 'none',
-        opacity: 0.6
+        opacity: config.opacity
       }}
       aria-hidden="true"
     />
