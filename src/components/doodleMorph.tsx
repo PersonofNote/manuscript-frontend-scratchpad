@@ -26,26 +26,33 @@ type Point = { x: number; y: number };
     progress: number;
   };
   
+  type Config = {
+    speed?: number;
+    opacity?: number;
+    sizeMultiplier?: number;
+    minNum?: number;
+    maxNum?: number;
+  };
+  
+  
+  const defaultConfig: Required<Config> = {
+    speed: 0.002,
+    opacity: 0.6,
+    sizeMultiplier: 0.01,
+    minNum: 40,
+    maxNum: 150,
+  };
 
 export type DoodleFunction = (ctx: CanvasRenderingContext2D, x: number, y: number, size: number) => void;
 
 type Props = {
-  doodles: DoodleFunction[]; // list of doodle drawing algorithms
-  theme?: 'light' | 'dark';   // optional future themes
+  doodles: {x:number, y:number}[];
+  theme?: 'light' | 'dark'; // Switch up with theme later
+  config?: Config;
 };
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
-const squiggle = Array.from({ length: 16 }).map(() => {
-    const x = Math.random() * 100 /5;
-    const y = Math.random() * 100/5;
-    const size = Math.random() * 20 + 10;
-    return {
-    x,
-    y,
-    size,
-    }
-});
 
 const whatShape = [
     { x: 0, y: -20 },
@@ -66,55 +73,19 @@ const whatShape = [
     { x: -5, y: -5 },
   ];
 
-const starShape = [
-  { x: 0, y: -20 },
-  { x: 5, y: -5 },
-  { x: 20, y: 0 },
-  { x: 5, y: 5 },
-  { x: 0, y: 20 },
-  { x: -5, y: 5 },
-  { x: -20, y: 0 },
-  { x: -5, y: -5 },
-  { x: 0, y: -20 },
-  { x: 5, y: -5 },
-  { x: 20, y: 0 },
-  { x: 5, y: 5 },
-  { x: 0, y: 20 },
-  { x: -5, y: 5 },
-  { x: -20, y: 0 },
-  { x: -5, y: -5 },
-];
-
-const flowerShape = [
-  { x: 0, y: -15 },
-  { x: 10, y: -10 },
-  { x: 15, y: 0 },
-  { x: 10, y: 10 },
-  { x: 0, y: 15 },
-  { x: -10, y: 10 },
-  { x: -15, y: 0 },
-  { x: -10, y: -10 },
-  { x: 0, y: -15 },
-  { x: 10, y: -10 },
-  { x: 15, y: 0 },
-  { x: 10, y: 10 },
-  { x: 0, y: 15 },
-  { x: -10, y: 10 },
-  { x: -15, y: 0 },
-  { x: -10, y: -10 },
-];
-
 const choose = (arr) => {
     const randomIndex = Math.max(0, Math.round(Math.random() * arr.length -1));
     console.log("INDEX")
     console.log(randomIndex)
  
-     return arr[randomIndex];
+     return arr[randomIndex];ß
  };
  
 
 
-export const DoodleMorphs: React.FC<Props> = ({ doodles, theme = 'light', config = {speed: 0.002, opacity: 0.6} }) => {
+export const DoodleMorphs: React.FC<Props> = ({ doodles, theme = 'light', config = {} }) => {
+
+  const settings = { ...defaultConfig, ...config };
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const doodlesRef = useRef<DoodleInstance[]>([]);
@@ -124,7 +95,7 @@ export const DoodleMorphs: React.FC<Props> = ({ doodles, theme = 'light', config
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const count = Math.max(40, Math.min(150, Math.floor(canvas.width * canvas.height * 0.0001)));
+    const count = Math.max(settings.minNum, Math.min(settings.maxNum, Math.floor(canvas.width * canvas.height * 0.0001)));
       
     doodlesRef.current = Array.from({ length: count }).map(() => {
         // todo exclude text area
@@ -140,7 +111,7 @@ export const DoodleMorphs: React.FC<Props> = ({ doodles, theme = 'light', config
         targetSize: Math.random() * 20 + 10,
         progress: 0,
         currentPoints: choose(doodles),
-        targetPoints: starShape
+        targetPoints: choose(doodles)
         };
     });
     }, [doodles]);
@@ -155,12 +126,12 @@ export const DoodleMorphs: React.FC<Props> = ({ doodles, theme = 'light', config
       ctx.clearRect(0, 0, canvas.width, canvas.height);
     
       doodlesRef.current.forEach((d) => {
-        d.progress += config.speed; // 🌿 very slow morphing
+        d.progress += settings.speed; // 🌿 very slow morphing
     
         if (d.progress >= 1) {
           d.progress = 0;
           d.currentPoints = d.targetPoints;
-          d.targetPoints = choose([starShape, squiggle, flowerShape])
+          d.targetPoints = choose(doodles)
          // d.targetPoints = Math.random() > 0.5 ? starShape : flowerShape; //TODO: figure out why the choose doesn't work
         }
     
@@ -174,9 +145,9 @@ export const DoodleMorphs: React.FC<Props> = ({ doodles, theme = 'light', config
         ctx.save();
         ctx.translate(d.x, d.y);
         ctx.beginPath();
-        ctx.moveTo(points[0].x * d.size * 0.02, points[0].y * d.size * 0.02);
+        ctx.moveTo(points[0].x * d.size * settings.sizeMultiplier, points[0].y * d.size * settings.sizeMultiplier);
         for (let i = 1; i < points.length; i++) {
-          ctx.lineTo(points[i].x * d.size * 0.02, points[i].y * d.size * 0.02);
+          ctx.lineTo(points[i].x * d.size * settings.sizeMultiplier, points[i].y * d.size * settings.sizeMultiplier);
         }
         ctx.closePath();
         ctx.strokeStyle = 'rgba(0,0,0,0.1)';
@@ -209,7 +180,7 @@ export const DoodleMorphs: React.FC<Props> = ({ doodles, theme = 'light', config
         width: '100%',
         height: '100%',
         pointerEvents: 'none',
-        opacity: config.opacity
+        opacity: settings.opacity
       }}
       aria-hidden="true"
     />
