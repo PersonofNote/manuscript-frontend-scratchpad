@@ -3,6 +3,15 @@
 /* For light theme, the runes will look hand drawn and like living runes, either like doodles or abhorsen-like protection runes */
 /* Dark theme is more computer glyphs with a slightly higher contrast, like a subtle glow. Definitely not behind the words though. Kinda Tron, kinda Atlantis */
 
+//TODO: get canvas to stretch full height even past fold
+
+// TODO: Get graph paper and plot out all kinds of fun shapes that have equivalent points :)
+
+// TODO: Figure out color interpolation. Most likely increment values towards each other at some constant rate. How to keep from mud? Incrementing all based on their distance 
+// From the target color seems like it could work. First try a flat rate and see. 
+// Next, proportional motion,
+// Last, see if you can figure out the dominant color and move that value the fastest?
+
 import React, { useEffect, useRef, useCallback } from 'react';
 
 type Point = { x: number; y: number };
